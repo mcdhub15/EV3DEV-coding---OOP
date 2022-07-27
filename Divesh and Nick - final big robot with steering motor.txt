@@ -1,0 +1,78 @@
+/#!use/bin/env python 3
+from ev3dev.auto import *
+from ev3dev.ev3 import *
+import time
+import random
+from random import randint
+
+gy = GyroSensor('in1')
+cl = ColorSensor('in3')
+cl2 = ColorSensor('in4')
+ts = TouchSensor('in2')
+sound = Sound()
+mm = MediumMotor('outA')
+lm = LargeMotor('outB')
+rm = LargeMotor('outC')
+#gy.reset_angle(0)
+gy.mode = 'GYRO-CAL'
+
+mm.run_timed(time_sp=1000, speed_sp=300)
+time.sleep(2)
+mm.run_timed(time_sp=1000, speed_sp=-300)
+time.sleep(3)
+rm.run_timed(time_sp=500, speed_sp=300)
+while True:
+  rnum = randint(0, 50)
+  gy.mode='GYRO-ANG'
+  units = gy.units
+  angle = gy.value()
+  print(str(angle) + " " + units)
+  if angle > 30:
+    lm.run_timed(time_sp=1000, speed_sp=0)
+    rm.run_timed(time_sp=1000, speed_sp=0)
+
+  if ts.is_pressed:
+    sound.tone([(200, 2000, 400),(800, 1000, 3000)])
+
+  print(cl.reflected_light_intensity)
+  if cl.reflected_light_intensity > 16 or cl2.reflected_light_intensity > 16:
+    rnum = 11
+   	lm.run_timed(time_sp=2000, speed_sp=-375)
+    rm.run_timed(time_sp=2000, speed_sp=-375)
+    time.sleep(0.75)
+    lm.run_timed(time_sp=500, speed_sp=500)
+    rm.run_timed(time_sp=500, speed_sp=-500)
+    time.sleep(0.5)
+  else:
+    lm.run_timed(time_sp=1000, speed_sp=425)
+    rm.run_timed(time_sp=1000, speed_sp=425)
+    print("random number = " + str(rnum))
+  if rnum == 37:
+    #rnum = 37
+    lm.run_timed(time_sp=1000, speed_sp=-450)
+    rm.run_timed(time_sp=1000, speed_sp=-450)
+    time.sleep(0.025)
+    lm.run_timed(time_sp=1000, speed_sp=450)
+    rm.run_timed(time_sp=1000, speed_sp=-450)
+    time.sleep(1)
+  elif rnum == 43:
+    rm.run_timed(time_sp=2000, speed_sp=-375)
+    time.sleep(0.75)
+    lm.run_timed(time_sp=500, speed_sp=500)
+    rm.run_timed(time_sp=500, speed_sp=-500)
+    time.sleep(0.5)
+  else:
+    lm.run_timed(time_sp=1000, speed_sp=425)
+    rm.run_timed(time_sp=1000, speed_sp=425)
+    print("random number = " + str(rnum))
+  if rnum == 37:
+    #rnum = 37
+    lm.run_timed(time_sp=1000, speed_sp=-450)
+    rm.run_timed(time_sp=1000, speed_sp=-450)
+    time.sleep(0.025)
+    lm.run_timed(time_sp=1000, speed_sp=450)
+    rm.run_timed(time_sp=1000, speed_sp=-450)
+    time.sleep(1)
+  elif rnum == 43:
+    print("random number = " + str(rnum))
+    #rnum = randint(0,50)
