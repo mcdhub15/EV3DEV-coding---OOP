@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+from ev3dev2.sensor.lego import ColorSensor, TouchSensor
+from ev3dev2.sensor import INPUT_3, INPUT_2
+from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B
+from ev3dev2.motor import SpeedDPS, SpeedRPM, SpeedRPS, SpeedDPM
+from ev3dev2.motor import MoveTank, OUTPUT_A, OUTPUT_B
+from time import sleep
+large_motor = LargeMotor(OUTPUT_A)
+large_motor2 = LargeMotor(OUTPUT_B)
+cla = ColorSensor(INPUT_3)
+clb = ColorSensor(INPUT_2)
+
+
+while True:
+
+
+	print(cla.color_name)
+	print(clb.color_name)
+	if (cla.color_name  == "Black" and clb.color_name  == "Blue"):
+		large_motor.on(100)
+		large_motor2.on(100)
+	else:
+		large_motor.off()
+		large_motor2.off()
+	if (cla.color_name == "White"  and  clb.color_name == "Blue" or "Black"):
+		large_motor.on(50)
+		large_motor2.on(100)
+	else:
+		large_motor.off()
+		large_motor2.off()
+	if (clb.color_name == "White"  and  cla.color_name == "Blue" or "Black"):
+		large_motor.on(50)
+		large_motor2.on(100)
+	else:
+		large_motor.off()
+		large_motor2.off()
+	if not (cla.color_name == "White" and clb.color_name == "Blue" or "Black"):
+			large_motor.off()
+			large_motor2.off()
+	if not (clb.color_name == "White" and cla.color_name == "Blue" or "Black"):
+			large_motor.off()
+			large_motor2.off() 

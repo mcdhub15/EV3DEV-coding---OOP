@@ -1,0 +1,33 @@
+#!use/bin/env python 3
+from ev3dev.auto import *
+from ev3dev.ev3 import *
+from ev3dev2.led import Leds
+
+
+
+import time
+
+
+leds = Leds()
+#ts = TouchSensor('in3')
+cl = ColorSensor('in3')
+us = UltrasonicSensor('in4')
+sound = Sound()
+MODE_US_DIST_CM = 'US-DIST-CM'
+
+lm = LargeMotor('outD')
+
+while True:
+	if cl.reflected_light_intensity > 16:
+		lm.run_timed(time_sp=1000, speed_sp=1000)
+	elif cl.reflected_light_intensity < 16:
+		lm.run_timed(time_sp=1000, speed_sp=500)
+
+	if ts.is_pressed:
+		lm.run_timed(time_sp=1000, speed_sp=1000)
+		sound.speak("Hello! Emmitt and Malachi like robots")
+		leds.animate_police_lights('RED', 'GREEN', sleeptime=0.75, duration=10)
+
+	if us.distance_centimeters <= 10:
+		sound.speak("You're getting close")
+
