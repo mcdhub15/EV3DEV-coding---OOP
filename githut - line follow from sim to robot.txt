@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+
+# Import the necessary libraries
+import time
+import math
+from ev3dev2.motor import *
+from ev3dev2.sound import Sound
+from ev3dev2.button import Button
+from ev3dev2.sensor import *
+from ev3dev2.sensor.lego import *
+from ev3dev2.sensor.virtual import *
+import random
+
+# Create the sensors and motors objects
+motorA = LargeMotor(OUTPUT_A)
+motorB = LargeMotor(OUTPUT_B)
+left_motor = motorA
+right_motor = motorB
+tank_drive = MoveTank(OUTPUT_A, OUTPUT_B)
+steering_drive = MoveSteering(OUTPUT_A, OUTPUT_B)
+
+
+
+
+spkr = Sound()
+btn = Button()
+radio = Radio()
+
+cs_left = ColorSensor(INPUT_1)
+cs_right = ColorSensor(INPUT_2)
+us_in3 = UltrasonicSensor(INPUT_3)
+gyro_in3 = GyroSensor(INPUT_4)
+gps_in4 = GPSSensor(INPUT_5)
+#pen_in5 = Pen(INPUT_5)
+
+us_in3.mode='US-DIST-CM'
+
+motorC = LargeMotor(OUTPUT_C) # Magnet
+
+# Here is where your code starts
+
+
+while True:
+    Llight = cs_left.reflected_light_intensity
+    Rlight = cs_right.reflected_light_intensity
+    print ("Left:",Llight,"Right",Rlight )
+    #white = 100
+    #black = 10
+    if Rlight > 50:
+        right_motor.on(20)
+        left_motor.stop()
+    elif Rlight < 50:
+        right_motor.stop()
+        left_motor.on(20)
+    if Llight > 50:
+        left_motor.on(20)
+        right_motor.stop()
+    elif Llight < 50:
+        left_motor.stop()
+        right_motor.on(20)
